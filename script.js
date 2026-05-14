@@ -81,7 +81,11 @@ const regions = [
     art: "linear-gradient(90deg, transparent 0 38%, #9c9c9c 38% 58%, transparent 58%), linear-gradient(0deg, #202020 0 24%, #50d8f8 24% 28%, #202020 28%)",
     enemy: "Null Brute",
     isBoss: true,
-    questions: []
+    questions: [
+      { prompt: "BOSS SHIELD ACTIVE! PRINT THE EXACT TEXT 'HELLO WORLD' TO BREAK IT.", answer: "print('HELLO WORLD')", lesson: "PRINT() BREAKS THE SHIELD." },
+      { prompt: "THE BOSS IS CHARGING! ASSIGN THE INTEGER 100 TO A VARIABLE NAMED 'power'.", answer: "power = 100", lesson: "VARIABLES STORE POWER." },
+      { prompt: "FINAL BLOW! THE BOSS IS WEAK TO TRUTH. ASSIGN True TO A VARIABLE NAMED 'attack'.", answer: "attack = True", lesson: "BOOLEANS CAN DEFEAT LOGIC GOLEMS." }
+    ]
   }
 ];
 
@@ -578,8 +582,17 @@ const els = {
   xp: document.querySelector("#xp-value"),
   gold: document.querySelector("#gold-value"),
   inventory: document.querySelector("#inventory-value"),
-  spells: document.querySelector("#spells-value")
+  spells: document.querySelector("#spells-value"),
+  monacoWrapper: document.querySelector("#monaco-wrapper"),
+  monacoContainer: document.querySelector("#monaco-container"),
+  btnRunCode: document.querySelector("#btn-run-code")
 };
+
+let monacoEditor = null;
+let bossQuestions = [];
+let bossQuestionIndex = 0;
+let bossTimer = null;
+let bossTimeLeft = 0;
 
 let activeCommands = [];
 let selectedCommandIndex = 0;
@@ -1344,7 +1357,12 @@ function startBattle() {
   hideAnswer();
   els.title.textContent = "BATTLE";
   renderEnemy();
-  beginPartyRound(`${state.enemy.name.toUpperCase()} APPEARED.`);
+
+  if (state.region.isBoss) {
+    startBossBattle();
+  } else {
+    beginPartyRound(`${state.enemy.name.toUpperCase()} APPEARED.`);
+  }
 }
 
 function renderEnemy() {
@@ -1783,3 +1801,195 @@ drawSprite(els.partySprites[2], art.mage);
 drawSprite(els.partySprites[3], art.ranger);
 recalcPartyStats();
 showMap();
+
+/* ═══════════════════════════════════════════
+   BOSS BATTLE — MONACO EDITOR ENGINE
+   ═══════════════════════════════════════════ */
+
+function startBossBattle() {
+  say(`${state.enemy.name.toUpperCase()} APPEARED! PREPARE YOUR CODE.`);
+  setCommands("BOSS", [
+    { label: "BEGIN CODE BATTLE", onClick: initBossIDE }
+  ]);
+}
+
+function initBossIDE() {
+  bossQuestions = [...state.region.questions];
+  bossQuestionIndex = 0;
+
+  // Hide lower grid, show Monaco wrapper
+  document.querySelector(".lower-grid").classList.add("hidden");
+  document.querySelector(".message-window").classList.add("hidden");
+  els.monacoWrapper.classList.remove("hidden");
+  els.monacoWrapper.style.display = "flex";
+
+  // Initialize Monaco Editor
+  if (monacoEditor) {
+    monacoEditor.dispose();
+    monacoEditor = null;
+  }
+
+  require(['vs/editor/editor.main'], function () {
+    monaco.editor.defineTheme('boss-theme', {
+      base: 'vs-dark',
+      inherit: true,
+      rules: [
+        { token: 'keyword', foreground: 'fbbf24', fontStyle: 'bold' },
+        { token: 'string', foreground: '38bdf8' },
+        { token: 'number', foreground: '10b981' },
+        { token: 'comment', foreground: '6b7280' }
+      ],
+      colors: {
+        'editor.background': '#0a0f1c',
+        'editor.foreground': '#f8fafc',
+        'editor.lineHighlightBackground': '#1e293b',
+        'editorCursor.foreground': '#fbbf24',
+        'editor.selectionBackground': '#334155'
+      }
+    });
+
+    monacoEditor = monaco.editor.create(els.monacoContainer, {
+      value: '# Write your Python code here\n',
+      language: 'python',
+      theme: 'boss-theme',
+      fontSize: 14,
+      fontFamily: "'Outfit', monospace",
+      minimap: { enabled: false },
+      lineNumbers: 'on',
+      scrollBeyondLastLine: false,
+      wordWrap: 'on',
+      automaticLayout: true,
+      padding: { top: 12 }
+    });
+
+    // Bind Ctrl+Enter / Cmd+Enter to submit
+    monacoEditor.addAction({
+      id: 'submit-code',
+      label: 'Submit Code',
+      keybindings: [
+        monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter
+      ],
+      run: function () {
+        checkBossAnswer();
+      }
+    });
+
+    els.btnRunCode.onclick = checkBossAnswer;
+
+    showBossPrompt();
+  });
+}
+
+function showBossPrompt() {
+  if (bossQuestionIndex >= bossQuestions.length) {
+    winBossBattle();
+    return;
+  }
+  const q = bossQuestions[bossQuestionIndex];
+  const remaining = bossQuestions.length - bossQuestionIndex;
+  els.monacoWrapper.querySelector("header span").textContent =
+    `PHASE ${bossQuestionIndex + 1}/${bossQuestions.length}`;
+  
+  // Clear editor and set a hint comment
+  if (monacoEditor) {
+    monacoEditor.setValue(`# ${q.prompt}\n`);
+    monacoEditor.setPosition({ lineNumber: 2, column: 1 });
+    monacoEditor.focus();
+  }
+
+  // Start timer (30 seconds per prompt)
+  bossTimeLeft = 30;
+  updateBossTimerDisplay();
+  if (bossTimer) clearInterval(bossTimer);
+  bossTimer = setInterval(() => {
+    bossTimeLeft--;
+    updateBossTimerDisplay();
+    if (bossTimeLeft <= 0) {
+      clearInterval(bossTimer);
+      bossTimer = null;
+      failBossPhase();
+    }
+  }, 1000);
+}
+
+function updateBossTimerDisplay() {
+  const color = bossTimeLeft <= 10 ? '#ef4444' : '#fbbf24';
+  els.btnRunCode.textContent = `COMPILE (${bossTimeLeft}s)`;
+  els.btnRunCode.style.background = color;
+}
+
+function checkBossAnswer() {
+  if (!monacoEditor) return;
+  const code = monacoEditor.getValue()
+    .split('\n')
+    .filter(line => !line.trim().startsWith('#'))
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .join('\n');
+  
+  const q = bossQuestions[bossQuestionIndex];
+  const expected = q.answer.trim();
+  
+  if (code === expected) {
+    // Correct!
+    if (bossTimer) { clearInterval(bossTimer); bossTimer = null; }
+    bossQuestionIndex++;
+    
+    // Flash green
+    els.monacoWrapper.style.boxShadow = '0 0 30px rgba(16, 185, 129, 0.6)';
+    setTimeout(() => {
+      els.monacoWrapper.style.boxShadow = '';
+      showBossPrompt();
+    }, 800);
+  } else {
+    // Wrong — flash red, lose time
+    els.monacoWrapper.style.boxShadow = '0 0 30px rgba(239, 68, 68, 0.6)';
+    bossTimeLeft = Math.max(0, bossTimeLeft - 5);
+    updateBossTimerDisplay();
+    setTimeout(() => {
+      els.monacoWrapper.style.boxShadow = '';
+    }, 400);
+  }
+}
+
+function failBossPhase() {
+  cleanupBossIDE();
+  say("TIME'S UP! THE BOSS OVERWHELMED YOUR CODE. TRY AGAIN.");
+  setCommands("RETRY", [
+    { label: "RETRY", onClick: startBattle },
+    { label: "RETURN", onClick: showMap }
+  ]);
+}
+
+function winBossBattle() {
+  if (bossTimer) { clearInterval(bossTimer); bossTimer = null; }
+  cleanupBossIDE();
+  
+  const xp = state.enemy.xp;
+  grantBattleRewards();
+  state.xp += xp;
+  state.enemy = null;
+  els.enemyLine.innerHTML = "";
+  
+  const regionIndex = regions.findIndex(r => r.id === state.region.id);
+  if (regionIndex === state.currentStage && regionIndex < regions.length - 1) {
+    state.currentStage += 1;
+  }
+  
+  say(`BOSS DEFEATED! GAINED ${xp} XP. ${lootSummary()} CHAPTER 1 COMPLETE!`);
+  setCommands("VICTORY", [
+    { label: "RETURN", onClick: showMap }
+  ]);
+  updateStatus();
+}
+
+function cleanupBossIDE() {
+  if (monacoEditor) {
+    monacoEditor.dispose();
+    monacoEditor = null;
+  }
+  els.monacoWrapper.classList.add("hidden");
+  els.monacoWrapper.style.display = "";
+  document.querySelector(".lower-grid").classList.remove("hidden");
+  document.querySelector(".message-window").classList.remove("hidden");
+}
