@@ -66,15 +66,18 @@ button, input {
 }
 
 .nes-screen {
-  width: calc(180 * var(--u));
-  max-width: 95vw;
+  width: 100%;
+  max-width: 420px;
+  min-height: 850px;
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px inset var(--glass-highlight);
-  padding: calc(6 * var(--u));
+  padding: calc(5 * var(--u));
+  display: flex;
+  flex-direction: column;
   transition: all 0.3s ease;
 }
 
@@ -92,13 +95,16 @@ button, input {
 }
 
 .field {
-  height: calc(80 * var(--u));
+  flex: 1;
+  min-height: 380px;
   background: rgba(0, 0, 0, 0.3);
   border: 1px solid var(--glass-border);
   border-radius: 16px;
   position: relative;
   overflow: hidden;
   box-shadow: inset 0 10px 30px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
 }
 
 .world-view {
@@ -202,9 +208,10 @@ button, input {
   position: absolute;
   inset: 0;
   display: grid;
-  grid-template-columns: 1fr calc(64 * var(--u));
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
   background: 
-    radial-gradient(circle at 30% 50%, rgba(239, 68, 68, 0.05), transparent 60%),
+    radial-gradient(circle at 50% 30%, rgba(239, 68, 68, 0.05), transparent 60%),
     linear-gradient(to top, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
 }
 
@@ -246,10 +253,12 @@ button, input {
 }
 
 .party-column {
-  padding: calc(6 * var(--u)) calc(4 * var(--u));
+  border-top: 1px solid var(--glass-border);
+  padding: calc(3 * var(--u));
   display: grid;
-  align-content: center;
-  gap: calc(3 * var(--u));
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  gap: calc(2 * var(--u));
 }
 
 .party-row {
@@ -309,9 +318,9 @@ button, input {
 
 .lower-grid {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: calc(4 * var(--u));
-  margin-top: calc(4 * var(--u));
+  grid-template-columns: 1fr;
+  gap: calc(3 * var(--u));
+  margin-top: calc(3 * var(--u));
 }
 
 .blue-window {
@@ -647,26 +656,17 @@ button, input {
   80% { transform: translate(4px, -2px); }
 }
 
-@media (max-width: 800px) {
-  .game-shell { padding: 12px; }
-  .nes-screen { padding: 16px; border-radius: 16px; }
-  .field { height: 350px; }
-  .world-view { overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; padding: 20px 0; }
-  .region-button { position: relative; left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; width: 90%; min-height: 70px; margin-bottom: 10px; }
-  .map-marker { display: none; }
-  .battle-view { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
-  .party-column { border-left: none; border-top: 1px solid var(--glass-border); padding: 16px; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .lower-grid { grid-template-columns: 1fr; }
-  .commands-window, .status-window { min-height: auto; }
-}
-
 @media (max-width: 600px) {
   :root { --u: 3px; }
   .game-shell { padding: 0; min-height: 100vh; }
-  .nes-screen { padding: 12px; border-radius: 0; min-height: 100vh; }
-  .field { height: 260px; }
-  .party-column { grid-template-columns: 1fr; padding: 12px 8px; gap: 8px; }
+  .nes-screen { 
+    padding: 12px; 
+    border-radius: 0; 
+    min-height: 100vh; 
+    max-width: 100%;
+    border: none;
+  }
+  .field { min-height: 300px; }
   .status-window { font-size: 14px; }
-  .commands { grid-template-columns: 1fr 1fr; }
-  .command-btn { font-size: 13px; padding: 10px; }
+  .command-button, .reward-button { font-size: 13px; padding: 10px; }
 }
