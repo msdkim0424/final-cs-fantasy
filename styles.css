@@ -68,17 +68,19 @@ button, input {
 .nes-screen {
   width: 100%;
   max-width: 420px;
-  min-height: 850px;
+  height: 850px;
+  max-height: 100vh;
   background: var(--glass-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--glass-border);
   border-radius: 24px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px inset var(--glass-highlight);
-  padding: calc(5 * var(--u));
+  padding: calc(4 * var(--u));
   display: flex;
   flex-direction: column;
   transition: all 0.3s ease;
+  overflow: hidden;
 }
 
 .screen-header {
@@ -110,6 +112,13 @@ button, input {
 .world-view {
   position: absolute;
   inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: calc(4 * var(--u));
+  padding: calc(6 * var(--u)) 0;
+  overflow-y: auto;
   background: 
     linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
@@ -120,19 +129,20 @@ button, input {
 }
 
 .region-button {
-  position: absolute;
-  width: calc(52 * var(--u));
-  min-height: calc(16 * var(--u));
+  position: relative;
+  width: 90%;
+  min-height: calc(18 * var(--u));
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   color: var(--white);
   background: rgba(15, 23, 42, 0.6);
   backdrop-filter: blur(8px);
   text-align: left;
-  padding: calc(3 * var(--u)) calc(4 * var(--u)) calc(3 * var(--u)) calc(10 * var(--u));
+  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(12 * var(--u));
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  flex-shrink: 0;
 }
 
 .region-button::before {
@@ -180,22 +190,8 @@ button, input {
   display: block;
 }
 
-/* positions adapted from original */
-.region-button[data-region-index="0"] { left: calc(8 * var(--u)); top: calc(10 * var(--u)); }
-.region-button[data-region-index="1"] { right: calc(8 * var(--u)); top: calc(14 * var(--u)); }
-.region-button[data-region-index="2"] { left: calc(14 * var(--u)); bottom: calc(12 * var(--u)); }
-.region-button[data-region-index="3"] { right: calc(12 * var(--u)); bottom: calc(14 * var(--u)); }
-
 .map-marker {
-  position: absolute;
-  width: calc(6 * var(--u));
-  height: calc(6 * var(--u));
-  transform: translate(-50%, -50%);
-  border-radius: 50%;
-  background: var(--cyan);
-  box-shadow: 0 0 20px var(--cyan), 0 0 0 4px rgba(56, 189, 248, 0.3);
-  pointer-events: none;
-  animation: pulse-marker 2s infinite;
+  display: none;
 }
 
 @keyframes pulse-marker {
@@ -430,10 +426,12 @@ button, input {
 }
 
 .message-window {
+  flex: 1;
   min-height: calc(24 * var(--u));
   margin-top: calc(4 * var(--u));
   padding: calc(4 * var(--u)) calc(5 * var(--u));
   position: relative;
+  overflow-y: auto;
 }
 
 #dialogue-text {
@@ -662,11 +660,11 @@ button, input {
   .nes-screen { 
     padding: 12px; 
     border-radius: 0; 
-    min-height: 100vh; 
+    height: 100vh; 
     max-width: 100%;
     border: none;
   }
-  .field { min-height: 300px; }
+  .field { min-height: 260px; }
   .status-window { font-size: 14px; }
   .command-button, .reward-button { font-size: 13px; padding: 10px; }
 }
