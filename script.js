@@ -508,6 +508,8 @@ const art = {
 const state = {
   mode: "map",
   region: null,
+  currentStage: 0,
+  playedStory: {},
   party: partyBlueprints.map((member) => ({
     ...member,
     baseMaxHp: member.maxHp,
@@ -586,6 +588,41 @@ let messageTimer = null;
 let messageFullText = "";
 let messageIndex = 0;
 let messageTyping = false;
+
+let cutsceneActive = false;
+let currentStory = [];
+let currentStoryIndex = 0;
+let cutsceneCallback = null;
+
+function playCutscene(story, callback) {
+  if (!story || story.length === 0) {
+    if (callback) callback();
+    return;
+  }
+  cutsceneActive = true;
+  currentStory = story;
+  currentStoryIndex = 0;
+  cutsceneCallback = callback;
+  els.commands.innerHTML = "";
+  els.commandTitle.textContent = "STORY";
+  nextCutsceneLine();
+}
+
+function nextCutsceneLine() {
+  if (currentStoryIndex >= currentStory.length) {
+    cutsceneActive = false;
+    if (cutsceneCallback) cutsceneCallback();
+    return;
+  }
+  const line = currentStory[currentStoryIndex];
+  say(`[${line.speaker}] ${line.text}`);
+  setCommands("STORY", [
+    { label: "NEXT >>", onClick: () => {
+        currentStoryIndex++;
+        nextCutsceneLine();
+    }}
+  ]);
+}
 
 function drawSprite(target, rows, className = "tiny-sprite") {
   target.className = className;
@@ -989,11 +1026,11 @@ function moveMapSelection(direction) {
 
 function drawMap() {
   els.world.innerHTML = "";
-  regions.forEach((region) => {
+  regions.slice(0, state.currentStage + 1).forEach((region, idx) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "region-button";
-    button.dataset.regionIndex = String(els.world.children.length);
+    button.dataset.regionIndex = String(idx);
     button.style.setProperty("--tile-art", region.art);
     button.innerHTML = `<strong>${region.name}</strong><span>${region.topic}</span>`;
     button.addEventListener("mouseenter", () => {
@@ -1238,11 +1275,20 @@ function enterRegion(region) {
   els.world.classList.add("hidden");
   els.battle.classList.remove("hidden");
   els.enemyLine.innerHTML = "";
+  
+  if (region.story && !state.playedStory[region.id]) {
+    state.playedStory[region.id] = true;
+    playCutscene(region.story, () => showExploreMenu(region));
+  } else {
+    showExploreMenu(region);
+  }
+}
+
+function showExploreMenu(region) {
   say(`${region.name.toUpperCase()}. TOPIC: ${region.topic}.`);
   setCommands("EXPLORE", [
-    { label: "FORWARD", onClick: startBattle },
+    { label: "BATTLE", onClick: startBattle },
     { label: "CODEX", onClick: showCodex },
-    { label: "REST", onClick: smallRest },
     { label: "RETURN", onClick: showMap }
   ]);
   updateStatus();
@@ -1574,6 +1620,7 @@ function winBattle() {
 }
 
 function reward(type) {
+  let msg = "";
   if (type === "hp") {
     state.party.forEach((member) => {
       member.baseMaxHp += 3;
@@ -1582,7 +1629,7 @@ function reward(type) {
     state.party.forEach((member) => {
       member.hp = member.maxHp;
     });
-    say("PARTY MAX HP UP.");
+    msg = "PARTY MAX HP UP. ";
   }
   if (type === "mp") {
     state.party.forEach((member) => {
@@ -1592,11 +1639,11 @@ function reward(type) {
     state.party.forEach((member) => {
       member.mp = member.maxMp;
     });
-    say("PARTY MAX MP UP.");
+    msg = "PARTY MAX MP UP. ";
   }
   if (type === "potion") {
     state.inventory.Potion = (state.inventory.Potion || 0) + 1;
-    say("GOT POTION.");
+    msg = "GOT POTION. ";
   }
   if (type === "spell") {
     const upgrades = [
@@ -1615,16 +1662,23 @@ function reward(type) {
       member.spellCost = nextUpgrade.spellCost;
       member.baseSpellDamage = nextUpgrade.spellDamage;
       recalcPartyStats();
-      say(`${member.name} LEARNED ${member.spellName}.`);
+      msg = `${member.name} LEARNED ${member.spellName}. `;
     } else {
       state.inventory.Potion = (state.inventory.Potion || 0) + 1;
-      say("SPELL BOOK WAS DUPLICATE. GOT POTION.");
+      msg = "SPELL BOOK WAS DUPLICATE. GOT POTION. ";
     }
   }
+  
+  const regionIndex = regions.findIndex(r => r.id === state.region.id);
+  if (regionIndex === state.currentStage && regionIndex < regions.length - 1) {
+    state.currentStage += 1;
+    msg += "STAGE CLEARED! NEW REGION UNLOCKED.";
+  } else {
+    msg += "STAGE CLEARED!";
+  }
+  say(msg);
+
   setCommands("EXPLORE", [
-    { label: "FORWARD", onClick: startBattle },
-    { label: "CODEX", onClick: showCodex },
-    { label: "REST", onClick: smallRest },
     { label: "RETURN", onClick: showMap }
   ]);
   updateStatus();
