@@ -203,7 +203,9 @@ button, input {
   inset: 0;
   display: grid;
   grid-template-columns: 1fr calc(64 * var(--u));
-  background: radial-gradient(circle at 30% 50%, rgba(239, 68, 68, 0.05), transparent 60%);
+  background: 
+    radial-gradient(circle at 30% 50%, rgba(239, 68, 68, 0.05), transparent 60%),
+    linear-gradient(to top, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
 }
 
 .enemy-field {
@@ -244,13 +246,10 @@ button, input {
 }
 
 .party-column {
-  border-left: 1px solid var(--glass-border);
   padding: calc(6 * var(--u)) calc(4 * var(--u));
   display: grid;
   align-content: center;
   gap: calc(3 * var(--u));
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(4px);
 }
 
 .party-row {
@@ -310,7 +309,7 @@ button, input {
 
 .lower-grid {
   display: grid;
-  grid-template-columns: 1fr calc(64 * var(--u));
+  grid-template-columns: 1.2fr 1fr;
   gap: calc(4 * var(--u));
   margin-top: calc(4 * var(--u));
 }
@@ -384,8 +383,9 @@ button, input {
 
 .status-window {
   display: grid;
-  align-content: center;
-  gap: calc(3 * var(--u));
+  grid-template-columns: 1fr 1fr;
+  align-content: start;
+  gap: calc(2 * var(--u)) calc(4 * var(--u));
 }
 
 .stat-row {
@@ -394,7 +394,7 @@ button, input {
   align-items: center;
   font-size: 0.9rem;
   border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .stat-row span {
@@ -414,6 +414,10 @@ button, input {
   text-align: right;
   letter-spacing: 1px;
   text-shadow: 0 0 8px rgba(56,189,248,0.4);
+  grid-column: 1 / -1;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  padding-top: 8px;
 }
 
 .message-window {
