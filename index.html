@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>CS Fantasy NES Prototype</title>
+    <link rel="stylesheet" href="styles.css?v=20260424-1045">
+  </head>
+  <body>
+    <main class="game-shell" aria-label="CS Fantasy prototype">
+      <section class="nes-screen" aria-live="polite">
+        <header class="screen-header">
+          <span>CS Fantasy</span>
+          <span id="screen-title">WORLD</span>
+        </header>
+
+        <section class="field">
+          <div class="world-view" id="world-view"></div>
+
+          <div class="battle-view hidden" id="battle-view">
+            <div class="enemy-field" id="enemy-field">
+              <div class="enemy-line" id="enemy-line"></div>
+            </div>
+            <div class="party-column">
+              <div class="party-row active" id="hero-row">
+                <div class="tiny-sprite party-sprite" id="hero-sprite" aria-label="Rune sprite"></div>
+                <div>
+                  <strong>RUNE</strong>
+                  <span>SP.CODE</span>
+                </div>
+              </div>
+              <div class="party-row muted" id="knight-row">
+                <div class="tiny-sprite party-sprite" id="knight-sprite" aria-label="Knight sprite"></div>
+                <div>
+                  <strong>BRAM</strong>
+                  <span>KNIGHT</span>
+                </div>
+              </div>
+              <div class="party-row muted" id="mage-row">
+                <div class="tiny-sprite party-sprite" id="mage-sprite" aria-label="Mage sprite"></div>
+                <div>
+                  <strong>ADA</strong>
+                  <span>MAGE</span>
+                </div>
+              </div>
+              <div class="party-row muted" id="ranger-row">
+                <div class="tiny-sprite party-sprite" id="ranger-sprite" aria-label="Ranger sprite"></div>
+                <div>
+                  <strong>IORI</strong>
+                  <span>RANGER</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="lower-grid">
+          <nav class="blue-window commands-window" aria-label="Commands">
+            <p class="window-title" id="command-title">COMMAND</p>
+            <div class="commands" id="commands"></div>
+          </nav>
+
+          <aside class="blue-window status-window" aria-label="Status">
+            <div class="stat-row"><span>UNIT</span><strong id="unit-value">RUNE</strong></div>
+            <div class="stat-row"><span>HP</span><strong id="hp-value">30/30</strong></div>
+            <div class="stat-row"><span>MP</span><strong id="mp-value">10/10</strong></div>
+            <div class="stat-row"><span>XP</span><strong id="xp-value">0</strong></div>
+            <div class="stat-row"><span>GOLD</span><strong id="gold-value">0</strong></div>
+            <div class="stat-row"><span>POTN</span><strong id="inventory-value">1</strong></div>
+            <div class="spell-row" id="spells-value">SPARK</div>
+          </aside>
+        </section>
+
+        <section class="blue-window message-window" id="message-window">
+          <p id="dialogue-text"></p>
+          <section class="question-card hidden" id="question-card" aria-live="polite">
+            <p class="question-kind" id="question-kind">QUESTION</p>
+            <p class="question-prompt" id="question-prompt"></p>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <script src="script.js?v=20260424-1045"></script>
+  </body>
+</html>
