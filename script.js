@@ -1,75 +1,87 @@
 const regions = [
   {
-    id: "functions",
-    name: "Function Fens",
-    topic: "DEF RETURN",
+    id: "stage-1-1",
+    name: "Syntax Village",
+    topic: "PRINT & STRINGS",
     codex: [
-      "DEF: STARTS A FUNCTION.",
-      "RETURN: SENDS A VALUE BACK.",
-      "(): HOLDS PARAMETERS.",
-      "INDENT: MARKS THE FUNCTION BODY."
+      "PRINT(): OUTPUTS TEXT TO THE SCREEN.",
+      "STRINGS: TEXT WRAPPED IN QUOTES.",
+      "EXAMPLE: print('HELLO')"
+    ],
+    story: [
+      { speaker: "ADA", text: "Rune, wake up! The Indent Wraiths are breaching the village walls!" },
+      { speaker: "ADA", text: "We need to cast a projection spell to call for help!" },
+      { speaker: "ADA", text: "To project a message to the world, you must use the print() incantation. Wrap your message in quotes!" }
     ],
     art: "linear-gradient(45deg, transparent 0 42%, #38b858 42% 58%, transparent 58%), radial-gradient(circle at 25% 24%, #50d8f8 0 12%, transparent 13%), #184820",
-    enemy: "Indent Wraith",
+    enemy: "String Slime",
     questions: [
-      { prompt: "WHICH WORD STARTS A FUNCTION?", choices: ["def", "return", "list", "if"], answer: "def", lesson: "FUNCTIONS BEGIN WITH DEF." },
-      { prompt: "WHICH WORD SENDS A VALUE BACK?", choices: ["print", "yield", "return", "pass"], answer: "return", lesson: "RETURN SENDS A VALUE BACK." },
-      { prompt: "FILL IN THE BLANK: ___ HEAL():", choices: ["class", "for", "def", "import"], answer: "def", lesson: "DEF STARTS A FUNCTION HEADER." }
+      { prompt: "WHICH COMMAND OUTPUTS TEXT TO THE SCREEN?", choices: ["print()", "show()", "log()", "display()"], answer: "print()", lesson: "PRINT() IS USED TO OUTPUT TEXT." },
+      { prompt: "WHAT DO WE USE TO SURROUND A STRING OF TEXT?", choices: ["()", "{}", "[]", "\" \""], answer: "\" \"", lesson: "STRINGS ARE TEXT WRAPPED IN QUOTES." },
+      { prompt: "FILL IN THE BLANK: ___('HELP!')", choices: ["print", "send", "write", "say"], answer: "print", lesson: "PRINT OUTPUTS THE STRING." }
     ]
   },
   {
-    id: "loops",
-    name: "Loopwood",
-    topic: "FOR WHILE",
+    id: "stage-1-2",
+    name: "Village Gates",
+    topic: "VARIABLES",
     codex: [
-      "FOR: WALKS THROUGH ITEMS.",
-      "WHILE: REPEATS WHILE TRUE.",
-      "IN: CONNECTS ITEM TO LIST.",
-      "COLON: OPENS THE LOOP BLOCK."
+      "VARIABLES: CONTAINERS FOR DATA.",
+      "=: ASSIGNS A VALUE TO A VARIABLE.",
+      "EXAMPLE: hp = 100"
+    ],
+    story: [
+      { speaker: "IORI", text: "We can't just keep shouting into the void, Rune! We need to store our magic to use it later." },
+      { speaker: "IORI", text: "Use an equals sign '=' to assign your magic to a Variable." },
+      { speaker: "IORI", text: "Think of a variable like a labeled box. 'health = 100' puts the number 100 into the box named health!" }
     ],
     art: "repeating-linear-gradient(90deg, #184820 0 16px, #286830 16px 28px), radial-gradient(circle at 72% 30%, #d84040 0 9%, transparent 10%)",
-    enemy: "Loop Serpent",
+    enemy: "Var Bat",
     questions: [
-      { prompt: "WHICH LOOP RUNS THROUGH ITEMS IN A LIST?", choices: ["if", "for", "while", "def"], answer: "for", lesson: "FOR LOOPS WALK THROUGH COLLECTIONS." },
-      { prompt: "WHICH LOOP RUNS WHILE A CONDITION STAYS TRUE?", choices: ["while", "return", "for", "list"], answer: "while", lesson: "WHILE REPEATS WHILE TRUE." },
-      { prompt: "FILL IN THE BLANK: ___ GEM IN GEMS:", choices: ["if", "for", "while", "def"], answer: "for", lesson: "FOR ITEM IN LIST: IS ITERATION." }
+      { prompt: "WHICH SYMBOL IS USED TO ASSIGN A VALUE TO A VARIABLE?", choices: ["==", "-", "+", "="], answer: "=", lesson: "THE EQUALS SIGN = IS FOR ASSIGNMENT." },
+      { prompt: "IF x = 5, WHAT IS INSIDE THE VARIABLE x?", choices: ["x", "5", "0", "None"], answer: "5", lesson: "VARIABLES HOLD THE ASSIGNED VALUE." },
+      { prompt: "WHICH IS A VALID VARIABLE ASSIGNMENT?", choices: ["10 = score", "score = 10", "score == 10", "score + 10"], answer: "score = 10", lesson: "THE VARIABLE NAME MUST BE ON THE LEFT." }
     ]
   },
   {
-    id: "lists",
-    name: "Listforge",
-    topic: "LIST APPEND",
+    id: "stage-1-3",
+    name: "The Locked Gate",
+    topic: "DATA TYPES",
     codex: [
-      "LIST: ORDERED, CHANGEABLE DATA.",
-      "[]: MAKES A LIST LITERAL.",
-      "APPEND(): ADDS ONE ITEM.",
-      "INDEX: POSITION OF AN ITEM."
+      "INT: WHOLE NUMBERS.",
+      "FLOAT: NUMBERS WITH DECIMALS.",
+      "BOOLEAN: TRUE OR FALSE."
+    ],
+    story: [
+      { speaker: "BRAM", text: "Halt! This gate only accepts pure data types! You can't just throw strings at it." },
+      { speaker: "ADA", text: "He's right. Whole numbers are called Integers (int), and numbers with decimals are Floats (float)." },
+      { speaker: "ADA", text: "And remember, Booleans are just True or False!" }
     ],
     art: "linear-gradient(135deg, #986030 0 28%, #f8d858 28% 36%, #603818 36% 62%, #d89038 62% 72%, #202020 72%)",
-    enemy: "Syntax Mimic",
+    enemy: "Float Phantom",
     questions: [
-      { prompt: "WHICH METHOD ADDS ONE ITEM TO A LIST?", choices: ["append()", "extend()", "insert()", "add()"], answer: "append()", lesson: "APPEND ADDS ONE ITEM TO A LIST." },
-      { prompt: "WHICH PYTHON TYPE STORES ORDERED, CHANGEABLE VALUES?", choices: ["tuple", "list", "dict", "set"], answer: "list", lesson: "A LIST STORES ORDERED VALUES." },
-      { prompt: "WHICH SYMBOLS MAKE A LIST LITERAL?", choices: ["()", "[]", "{}", "<>"], answer: "[]", lesson: "LISTS USE SQUARE BRACKETS." }
+      { prompt: "WHAT DATA TYPE IS 3.14?", choices: ["int", "float", "string", "boolean"], answer: "float", lesson: "FLOATS ARE NUMBERS WITH DECIMALS." },
+      { prompt: "WHAT DATA TYPE IS True?", choices: ["string", "int", "float", "boolean"], answer: "boolean", lesson: "BOOLEANS ARE TRUE OR FALSE." },
+      { prompt: "WHAT DATA TYPE IS 42?", choices: ["int", "float", "string", "boolean"], answer: "int", lesson: "INTS ARE WHOLE NUMBERS." }
     ]
   },
   {
-    id: "logic",
-    name: "Logic Spire",
-    topic: "IF TRUE FALSE NONE",
+    id: "stage-1-4",
+    name: "The Village Square",
+    topic: "BOSS BATTLE",
     codex: [
-      "IF: CHECKS A CONDITION.",
-      "TRUE / FALSE: BOOLEAN VALUES.",
-      "NONE: MEANS NO VALUE.",
-      "COLON: STARTS THE IF BLOCK."
+      "BOSS BATTLE AHEAD.",
+      "PREPARE YOUR CODE."
+    ],
+    story: [
+      { speaker: "LORD NULL", text: "Fools. You cannot compile a future here. This village will be garbage collected." },
+      { speaker: "IORI", text: "It's a Null Brute! Standard attacks won't work." },
+      { speaker: "IORI", text: "Rune, you have to write the source code to break its armor!" }
     ],
     art: "linear-gradient(90deg, transparent 0 38%, #9c9c9c 38% 58%, transparent 58%), linear-gradient(0deg, #202020 0 24%, #50d8f8 24% 28%, #202020 28%)",
-    enemy: "Boolean Golem",
-    questions: [
-      { prompt: "WHICH WORD STARTS A CONDITION?", choices: ["else", "if", "def", "for"], answer: "if", lesson: "IF RUNS CODE WHEN A TEST PASSES." },
-      { prompt: "WHICH IS PYTHON'S EXACT TRUE VALUE?", choices: ["true", "TRUE", "True", "truth"], answer: "True", lesson: "PYTHON USES TRUE WITH CAPITAL T." },
-      { prompt: "WHICH VALUE MEANS 'NO VALUE'?", choices: ["False", "Zero", "Null", "None"], answer: "None", lesson: "NONE MEANS ABSENCE OF VALUE." }
-    ]
+    enemy: "Null Brute",
+    isBoss: true,
+    questions: []
   }
 ];
 
@@ -81,54 +93,40 @@ const guardQuestions = [
 ];
 
 const enemyBook = {
-  "Indent Wraith": {
-    hp: 24,
-    xp: 12,
-    damage: 7,
-    gold: [8, 14],
+  "String Slime": {
+    hp: 15,
+    xp: 5,
+    damage: 3,
+    gold: [5, 10],
     drops: [
-      { type: "material", name: "INDENT THREAD", chance: 0.55 },
-      { type: "item", name: "Potion", amount: 1, chance: 0.18 }
+      { type: "item", name: "Potion", amount: 1, chance: 0.3 }
     ]
   },
-  "Loop Serpent": {
-    hp: 28,
-    xp: 14,
-    damage: 8,
-    gold: [10, 16],
-    drops: [
-      { type: "material", name: "LOOP SCALE", chance: 0.55 },
-      { type: "item", name: "Ether", amount: 1, chance: 0.16 }
-    ]
-  },
-  "Syntax Mimic": {
-    hp: 30,
-    xp: 15,
-    damage: 8,
-    gold: [12, 18],
-    drops: [
-      { type: "material", name: "SYNTAX SCRAP", chance: 0.58 },
-      { type: "item", name: "Potion", amount: 1, chance: 0.16 }
-    ]
-  },
-  "Boolean Golem": {
-    hp: 34,
-    xp: 18,
-    damage: 9,
-    gold: [14, 22],
-    drops: [
-      { type: "material", name: "BOOLEAN CORE", chance: 0.58 },
-      { type: "item", name: "Revive", amount: 1, chance: 0.12 }
-    ]
-  },
-  "Null Imp": {
+  "Var Bat": {
     hp: 20,
-    xp: 10,
-    damage: 6,
-    gold: [6, 10],
+    xp: 8,
+    damage: 5,
+    gold: [8, 12],
     drops: [
-      { type: "material", name: "NULL DUST", chance: 0.52 },
-      { type: "item", name: "Potion", amount: 1, chance: 0.12 }
+      { type: "item", name: "Potion", amount: 1, chance: 0.2 }
+    ]
+  },
+  "Float Phantom": {
+    hp: 25,
+    xp: 12,
+    damage: 8,
+    gold: [10, 15],
+    drops: [
+      { type: "item", name: "Ether", amount: 1, chance: 0.2 }
+    ]
+  },
+  "Null Brute": {
+    hp: 9999,
+    xp: 50,
+    damage: 15,
+    gold: [50, 100],
+    drops: [
+      { type: "item", name: "Revive", amount: 1, chance: 1.0 }
     ]
   }
 };
