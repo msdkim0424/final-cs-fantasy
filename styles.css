@@ -647,11 +647,22 @@ button, input {
   .game-shell { padding: 12px; }
   .nes-screen { padding: 16px; border-radius: 16px; }
   .field { height: 350px; }
-  .world-view { overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; }
-  .region-button { position: relative; left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; width: 90%; min-height: 70px; }
+  .world-view { overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; padding: 20px 0; }
+  .region-button { position: relative; left: auto !important; right: auto !important; top: auto !important; bottom: auto !important; width: 90%; min-height: 70px; margin-bottom: 10px; }
   .map-marker { display: none; }
   .battle-view { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
   .party-column { border-left: none; border-top: 1px solid var(--glass-border); padding: 16px; grid-template-columns: 1fr 1fr; gap: 12px; }
   .lower-grid { grid-template-columns: 1fr; }
   .commands-window, .status-window { min-height: auto; }
+}
+
+@media (max-width: 600px) {
+  :root { --u: 3px; }
+  .game-shell { padding: 0; min-height: 100vh; }
+  .nes-screen { padding: 12px; border-radius: 0; min-height: 100vh; }
+  .field { height: 260px; }
+  .party-column { grid-template-columns: 1fr; padding: 12px 8px; gap: 8px; }
+  .status-window { font-size: 14px; }
+  .commands { grid-template-columns: 1fr 1fr; }
+  .command-btn { font-size: 13px; padding: 10px; }
 }
