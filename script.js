@@ -603,10 +603,23 @@ function playCutscene(story, callback) {
 function nextCutsceneLine() {
   if (currentStoryIndex >= currentStory.length) {
     cutsceneActive = false;
+    state.activePartyIndex = 0;
+    updatePartyDisplay();
     if (cutsceneCallback) cutsceneCallback();
     return;
   }
   const line = currentStory[currentStoryIndex];
+
+  // Highlight the speaker's party row
+  const speakerMap = { "RUNE": 0, "BRAM": 1, "ADA": 2, "IORI": 3 };
+  const speakerIndex = speakerMap[line.speaker.toUpperCase()];
+  if (speakerIndex !== undefined) {
+    state.activePartyIndex = speakerIndex;
+  } else {
+    state.activePartyIndex = -1; // No party member highlighted for NPCs/villains
+  }
+  updatePartyDisplay();
+
   say(`[${line.speaker}] ${line.text}`);
   setCommands("STORY", [
     { label: "NEXT >>", onClick: () => {
