@@ -717,6 +717,183 @@ button, input {
   80% { transform: translate(4px, -2px); }
 }
 
+/* ═══════════════════════════════════════════
+   ANIMATION SYSTEM — Making it feel alive
+   ═══════════════════════════════════════════ */
+
+/* ── Idle sprite breathing (constant bob) ── */
+.party-sprite {
+  animation: sprite-idle 2.5s ease-in-out infinite;
+}
+.party-row.active .party-sprite {
+  animation: sprite-idle-active 1.8s ease-in-out infinite;
+}
+
+@keyframes sprite-idle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+@keyframes sprite-idle-active {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* ── Enemy idle float ── */
+.enemy-card .tiny-sprite {
+  animation: enemy-float 3s ease-in-out infinite;
+}
+@keyframes enemy-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ── Enemy entrance (slide down + fade in) ── */
+.enemy-card {
+  animation: enemy-entrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes enemy-entrance {
+  0% { opacity: 0; transform: translateY(-30px) scale(0.8); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Enemy damage flash ── */
+.enemy-card.hit {
+  animation: enemy-hit 0.4s ease-out;
+}
+@keyframes enemy-hit {
+  0% { filter: brightness(3) saturate(0); }
+  30% { filter: brightness(3) saturate(0); transform: translateX(8px); }
+  60% { filter: brightness(1) saturate(1); transform: translateX(-5px); }
+  100% { filter: none; transform: translateX(0); }
+}
+
+/* ── Enemy death ── */
+.enemy-card.dying {
+  animation: enemy-death 0.8s ease-out forwards;
+}
+@keyframes enemy-death {
+  0% { opacity: 1; filter: none; transform: scale(1); }
+  30% { filter: brightness(4) saturate(0); transform: scale(1.1); }
+  60% { opacity: 0.5; filter: brightness(2) hue-rotate(180deg); transform: scale(0.9); }
+  100% { opacity: 0; filter: brightness(0); transform: scale(0.3) translateY(20px); }
+}
+
+/* ── Party member attack lunge ── */
+.party-row.attacking {
+  animation: attack-lunge 0.4s ease-out;
+}
+@keyframes attack-lunge {
+  0% { transform: translateX(-8px); }
+  30% { transform: translateX(20px); }
+  100% { transform: translateX(-8px); }
+}
+
+/* ── Party member spell cast glow ── */
+.party-row.casting {
+  animation: spell-cast 0.6s ease-out;
+}
+@keyframes spell-cast {
+  0% { box-shadow: 0 0 0 rgba(56, 189, 248, 0); }
+  40% { box-shadow: 0 0 30px rgba(56, 189, 248, 0.6), 0 0 60px rgba(139, 92, 246, 0.3); }
+  100% { box-shadow: 0 0 0 rgba(56, 189, 248, 0); }
+}
+
+/* ── Party member taking damage ── */
+.party-row.hurt {
+  animation: party-hurt 0.3s ease-out;
+}
+@keyframes party-hurt {
+  0% { filter: none; }
+  30% { filter: brightness(2) saturate(0); background: rgba(239, 68, 68, 0.3); }
+  100% { filter: none; }
+}
+
+/* ── Screen transitions ── */
+.field {
+  transition: opacity 0.3s ease;
+}
+.field.transition-out {
+  opacity: 0;
+}
+
+/* ── Cutscene speaker name highlight ── */
+#dialogue-text {
+  transition: opacity 0.15s ease;
+}
+
+/* ── Damage number popup ── */
+.damage-popup {
+  position: absolute;
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: var(--red);
+  text-shadow: 0 0 10px rgba(239, 68, 68, 0.6), 2px 2px 0 rgba(0,0,0,0.5);
+  pointer-events: none;
+  animation: damage-float 1s ease-out forwards;
+  z-index: 10;
+}
+.damage-popup.heal {
+  color: var(--green);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.6), 2px 2px 0 rgba(0,0,0,0.5);
+}
+@keyframes damage-float {
+  0% { opacity: 1; transform: translateY(0) scale(0.8); }
+  20% { transform: translateY(-10px) scale(1.2); }
+  100% { opacity: 0; transform: translateY(-40px) scale(0.9); }
+}
+
+/* ── World map button entrance ── */
+.region-button {
+  animation: map-btn-enter 0.4s ease-out both;
+}
+.region-button:nth-child(1) { animation-delay: 0.05s; }
+.region-button:nth-child(2) { animation-delay: 0.15s; }
+.region-button:nth-child(3) { animation-delay: 0.25s; }
+.region-button:nth-child(4) { animation-delay: 0.35s; }
+.region-button:nth-child(5) { animation-delay: 0.45s; }
+
+@keyframes map-btn-enter {
+  0% { opacity: 0; transform: translateX(-20px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Command button entrance ── */
+.command-button, .reward-button {
+  animation: cmd-pop 0.2s ease-out both;
+}
+.command-button:nth-child(1), .reward-button:nth-child(1) { animation-delay: 0s; }
+.command-button:nth-child(2), .reward-button:nth-child(2) { animation-delay: 0.04s; }
+.command-button:nth-child(3), .reward-button:nth-child(3) { animation-delay: 0.08s; }
+.command-button:nth-child(4), .reward-button:nth-child(4) { animation-delay: 0.12s; }
+.command-button:nth-child(5), .reward-button:nth-child(5) { animation-delay: 0.16s; }
+.command-button:nth-child(6), .reward-button:nth-child(6) { animation-delay: 0.20s; }
+
+@keyframes cmd-pop {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* ── Floating ambient particles (always-on) ── */
+.battle-view::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0, transparent 100%),
+    radial-gradient(1px 1px at 60% 20%, rgba(255,255,255,0.2) 0, transparent 100%),
+    radial-gradient(1px 1px at 80% 60%, rgba(255,255,255,0.15) 0, transparent 100%),
+    radial-gradient(1.5px 1.5px at 40% 70%, rgba(56, 189, 248, 0.2) 0, transparent 100%),
+    radial-gradient(1px 1px at 70% 80%, rgba(139, 92, 246, 0.15) 0, transparent 100%);
+  animation: particles-drift 8s linear infinite;
+}
+@keyframes particles-drift {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-15px); }
+}
+
 @media (max-width: 600px) {
   :root { --u: 3px; }
   .game-shell { padding: 0; min-height: 100vh; }
@@ -728,6 +905,5 @@ button, input {
     border: none;
   }
   .field { min-height: 260px; }
-  .status-window { font-size: 14px; }
   .command-button, .reward-button { font-size: 13px; padding: 10px; }
 }

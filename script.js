@@ -799,26 +799,45 @@ async function pulseClass(target, className, duration) {
 }
 
 async function animatePhysicalAttack(memberIndex) {
-  pulseClass(activeSprite(memberIndex), "attack-swing", 220);
-  pulseClass(activeRow(memberIndex), "attack-step", 340);
-  await wait(150);
-  pulseClass(els.field, "shake-light", 180);
-  await pulseClass(currentEnemyCard(), "hit", 220);
+  pulseClass(activeRow(memberIndex), "attacking", 400);
+  await wait(200);
+  pulseClass(els.field, "shake-light", 200);
+  await pulseClass(currentEnemyCard(), "hit", 400);
 }
 
 async function animateSpellCast(memberIndex) {
-  pulseClass(activeSprite(memberIndex), "cast-spark", 320);
-  pulseClass(activeRow(memberIndex), "cast-step", 420);
-  await wait(140);
-  pulseClass(els.field, "shake-heavy", 240);
-  await pulseClass(currentEnemyCard(), "spell-hit", 280);
+  pulseClass(activeRow(memberIndex), "casting", 600);
+  await wait(300);
+  pulseClass(els.field, "shake-heavy", 300);
+  await pulseClass(currentEnemyCard(), "hit", 400);
 }
 
 async function animateEnemyAdvance(targetIndex, blocked) {
-  pulseClass(currentEnemyCard(), "enemy-strike", 280);
-  await wait(130);
-  pulseClass(els.field, blocked ? "shake-light" : "shake-heavy", blocked ? 180 : 240);
-  await pulseClass(activeRow(targetIndex), blocked ? "guard-glow" : "damage-flash", 260);
+  pulseClass(currentEnemyCard(), "hit", 300);
+  await wait(150);
+  pulseClass(els.field, blocked ? "shake-light" : "shake-heavy", blocked ? 200 : 300);
+  await pulseClass(activeRow(targetIndex), blocked ? "attacking" : "hurt", 300);
+}
+
+function showDamagePopup(target, amount, isHeal) {
+  const popup = document.createElement("div");
+  popup.className = "damage-popup" + (isHeal ? " heal" : "");
+  popup.textContent = (isHeal ? "+" : "-") + amount;
+  const rect = target.getBoundingClientRect();
+  const fieldRect = els.field.getBoundingClientRect();
+  popup.style.left = (rect.left - fieldRect.left + rect.width / 2 - 15) + "px";
+  popup.style.top = (rect.top - fieldRect.top) + "px";
+  els.field.appendChild(popup);
+  setTimeout(() => popup.remove(), 1000);
+}
+
+async function animateEnemyDeath() {
+  const card = currentEnemyCard();
+  if (card) {
+    card.classList.add("dying");
+    pulseClass(els.field, "shake-heavy", 300);
+    await wait(800);
+  }
 }
 
 function normalize(value) {
@@ -1257,19 +1276,25 @@ function enterRegion(region) {
   state.region = region;
   state.enemy = null;
   hideAnswer();
-  els.title.textContent = region.name.toUpperCase();
-  els.world.classList.add("hidden");
-  els.battle.classList.remove("hidden");
-  els.battle.className = els.battle.className.replace(/backdrop-\S+/g, "").trim();
-  if (region.backdrop) els.battle.classList.add(region.backdrop);
-  els.enemyLine.innerHTML = "";
-  
-  if (region.story && !state.playedStory[region.id]) {
-    state.playedStory[region.id] = true;
-    playCutscene(region.story, () => showExploreMenu(region));
-  } else {
-    showExploreMenu(region);
-  }
+
+  // Fade transition
+  els.field.classList.add("transition-out");
+  setTimeout(() => {
+    els.title.textContent = region.name.toUpperCase();
+    els.world.classList.add("hidden");
+    els.battle.classList.remove("hidden");
+    els.battle.className = els.battle.className.replace(/backdrop-\S+/g, "").trim();
+    if (region.backdrop) els.battle.classList.add(region.backdrop);
+    els.enemyLine.innerHTML = "";
+    els.field.classList.remove("transition-out");
+
+    if (region.story && !state.playedStory[region.id]) {
+      state.playedStory[region.id] = true;
+      playCutscene(region.story, () => showExploreMenu(region));
+    } else {
+      showExploreMenu(region);
+    }
+  }, 300);
 }
 
 function showExploreMenu(region) {
@@ -1511,6 +1536,8 @@ async function resolveHeroAnswer(value) {
 
 function damageEnemy(amount) {
   state.enemy.hp = Math.max(0, state.enemy.hp - amount);
+  const card = currentEnemyCard();
+  if (card) showDamagePopup(card, amount, false);
   renderEnemy();
 }
 
@@ -1582,6 +1609,8 @@ async function applyDamage(lesson = "", targetIndex = state.guardTargetIndex) {
   await animateEnemyAdvance(targetIndex, false);
   const damage = target.defending ? Math.ceil(state.enemy.damage / 2) : state.enemy.damage;
   target.hp = Math.max(0, target.hp - damage);
+  const row = activeRow(targetIndex);
+  if (row) showDamagePopup(row, damage, false);
   state.animating = false;
   clearDefending();
   updateStatus();
@@ -1594,7 +1623,8 @@ async function applyDamage(lesson = "", targetIndex = state.guardTargetIndex) {
   }
 }
 
-function winBattle() {
+async function winBattle() {
+  await animateEnemyDeath();
   const xp = state.enemy.xp;
   grantBattleRewards();
   state.xp += xp;
