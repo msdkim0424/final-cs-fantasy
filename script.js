@@ -1246,7 +1246,8 @@ function showMap() {
   say("CHOOSE A LAND. PYTHON IS THE MAGIC OF THIS WORLD.");
   setCommands("MAP", [
     { label: "VILLAGE", onClick: showVillage },
-    { label: "BAG", onClick: bag }
+    { label: "BAG", onClick: bag },
+    { label: "STATUS", onClick: showStatus }
   ]);
   updateStatus();
 }
@@ -1276,6 +1277,7 @@ function showExploreMenu(region) {
   setCommands("EXPLORE", [
     { label: "BATTLE", onClick: startBattle },
     { label: "CODEX", onClick: showCodex },
+    { label: "STATUS", onClick: showStatus },
     { label: "RETURN", onClick: showMap }
   ]);
   updateStatus();
@@ -1304,11 +1306,16 @@ function smallRest() {
 
 function bag() {
   hideAnswer();
-  const partyStatus = state.party
+  const items = `POTION:${state.inventory.Potion || 0} ETHER:${state.inventory.Ether || 0} REVIVE:${state.inventory.Revive || 0}`;
+  say(`${items} — GOLD:${state.gold} XP:${state.xp}`);
+}
+
+function showStatus() {
+  hideAnswer();
+  const lines = state.party
     .map((m) => `${m.name} HP:${m.hp}/${m.maxHp} MP:${m.mp}/${m.maxMp}${m.spellName ? " [" + m.spellName + "]" : ""}`)
     .join(" | ");
-  const items = `POTION:${state.inventory.Potion || 0} ETHER:${state.inventory.Ether || 0} REVIVE:${state.inventory.Revive || 0}`;
-  say(`${partyStatus} — XP:${state.xp} GOLD:${state.gold} ${items}`);
+  say(lines);
 }
 
 function startBattle() {
