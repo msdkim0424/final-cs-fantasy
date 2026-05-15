@@ -486,44 +486,7 @@ button, input {
   transform: translateY(-1px);
 }
 
-.status-window {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-content: start;
-  gap: calc(2 * var(--u)) calc(4 * var(--u));
-}
 
-.stat-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.9rem;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  padding-bottom: 6px;
-}
-
-.stat-row span {
-  color: var(--gray);
-  letter-spacing: 1px;
-}
-
-.stat-row strong {
-  font-family: var(--font-ui);
-  font-weight: 600;
-  color: var(--white);
-}
-
-.spell-row {
-  color: var(--cyan);
-  font-weight: 600;
-  text-align: right;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px rgba(56,189,248,0.4);
-  grid-column: 1 / -1;
-  text-align: center;
-  border-top: 1px solid rgba(255,255,255,0.05);
-  padding-top: 8px;
-}
 
 .message-window {
   flex: 1;

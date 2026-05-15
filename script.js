@@ -562,13 +562,6 @@ const els = {
   questionPrompt: document.querySelector("#question-prompt"),
   commandTitle: document.querySelector("#command-title"),
   commands: document.querySelector("#commands"),
-  unit: document.querySelector("#unit-value"),
-  hp: document.querySelector("#hp-value"),
-  mp: document.querySelector("#mp-value"),
-  xp: document.querySelector("#xp-value"),
-  gold: document.querySelector("#gold-value"),
-  inventory: document.querySelector("#inventory-value"),
-  spells: document.querySelector("#spells-value"),
   monacoWrapper: document.querySelector("#monaco-wrapper"),
   monacoContainer: document.querySelector("#monaco-container"),
   btnRunCode: document.querySelector("#btn-run-code")
@@ -984,14 +977,6 @@ function updatePartyDisplay() {
 }
 
 function updateStatus() {
-  const member = activeMember() || state.party[0];
-  els.unit.textContent = member ? member.name : "NONE";
-  els.hp.textContent = member ? `${member.hp}/${member.maxHp}` : "0/0";
-  els.mp.textContent = member ? `${member.mp}/${member.maxMp}` : "0/0";
-  els.xp.textContent = String(state.xp);
-  els.gold.textContent = String(state.gold);
-  els.inventory.textContent = String(state.inventory.Potion || 0);
-  els.spells.textContent = member && member.spellName ? member.spellName : "NO MAGIC";
   updatePartyDisplay();
 }
 
@@ -1319,18 +1304,11 @@ function smallRest() {
 
 function bag() {
   hideAnswer();
-  const learned = state.party
-    .filter((member) => member.spellName)
-    .map((member) => `${member.name} ${member.spellName}`)
-    .join(", ");
-  const goods = `POTION ${state.inventory.Potion || 0}. ETHER ${state.inventory.Ether || 0}. REVIVE ${state.inventory.Revive || 0}. GOLD ${state.gold}.`;
-  const mats = Object.entries(state.materials)
-    .map(([name, amount]) => `${name} ${amount}.`)
-    .join(" ");
-  const gear = state.party
-    .map((member) => `${member.name}: ${memberEquipmentSummary(member)}`)
-    .join(" ");
-  say(`${goods} ${mats || "NO MATERIALS."} ${learned || "NO MAGIC."} ${gear}`);
+  const partyStatus = state.party
+    .map((m) => `${m.name} HP:${m.hp}/${m.maxHp} MP:${m.mp}/${m.maxMp}${m.spellName ? " [" + m.spellName + "]" : ""}`)
+    .join(" | ");
+  const items = `POTION:${state.inventory.Potion || 0} ETHER:${state.inventory.Ether || 0} REVIVE:${state.inventory.Revive || 0}`;
+  say(`${partyStatus} — XP:${state.xp} GOLD:${state.gold} ${items}`);
 }
 
 function startBattle() {
