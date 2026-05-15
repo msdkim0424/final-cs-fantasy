@@ -115,47 +115,82 @@ button, input {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: calc(4 * var(--u));
-  padding: calc(6 * var(--u)) 0;
+  justify-content: center;
+  gap: 0;
+  padding: calc(4 * var(--u)) calc(3 * var(--u));
   overflow-y: auto;
   background: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
-    radial-gradient(circle at 30% 40%, rgba(56, 189, 248, 0.15) 0, transparent 40%),
-    radial-gradient(circle at 70% 60%, rgba(139, 92, 246, 0.15) 0, transparent 40%),
-    #0a0f1c;
-  background-size: 30px 30px, 30px 30px, 100% 100%, 100% 100%;
+    /* mountains */
+    linear-gradient(135deg, transparent 35%, rgba(100, 116, 139, 0.12) 35% 37%, transparent 37%),
+    linear-gradient(155deg, transparent 45%, rgba(100, 116, 139, 0.08) 45% 47%, transparent 47%),
+    linear-gradient(125deg, transparent 55%, rgba(100, 116, 139, 0.06) 55% 57%, transparent 57%),
+    /* stars */
+    radial-gradient(circle at 15% 12%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 45% 8%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 75% 15%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 88% 6%, rgba(255,255,255,0.6) 0 1px, transparent 2px),
+    radial-gradient(circle at 35% 18%, rgba(255,255,255,0.4) 0 1px, transparent 2px),
+    /* ground */
+    linear-gradient(to top, #0d1a0d 0%, #0d1a0d 12%, transparent 12%),
+    /* sky */
+    linear-gradient(to bottom, #050a15 0%, #0c1a2e 40%, #162040 70%, #0d1a0d 100%);
+}
+
+/* ── Dotted path connecting stages ── */
+.region-button + .region-button::after {
+  content: "";
+  position: absolute;
+  top: calc(-2 * var(--u));
+  left: 50%;
+  transform: translateX(-50%) translateY(-100%);
+  width: 2px;
+  height: calc(2 * var(--u));
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(251, 191, 36, 0.4) 0 3px,
+    transparent 3px 7px
+  );
 }
 
 .region-button {
   position: relative;
-  width: 90%;
-  min-height: calc(18 * var(--u));
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 88%;
+  min-height: calc(16 * var(--u));
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   color: var(--white);
-  background: rgba(15, 23, 42, 0.6);
+  background: rgba(15, 23, 42, 0.7);
   backdrop-filter: blur(8px);
   text-align: left;
-  padding: calc(4 * var(--u)) calc(4 * var(--u)) calc(4 * var(--u)) calc(12 * var(--u));
+  padding: calc(3 * var(--u)) calc(3 * var(--u)) calc(3 * var(--u)) calc(14 * var(--u));
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 15px rgba(0,0,0,0.3);
   flex-shrink: 0;
+  margin-bottom: calc(2 * var(--u));
 }
 
+/* ── Stage number badge ── */
 .region-button::before {
-  content: "";
+  content: attr(data-stage);
   position: absolute;
   left: calc(3 * var(--u));
   top: 50%;
   transform: translateY(-50%);
-  width: calc(3 * var(--u));
-  height: calc(3 * var(--u));
+  width: calc(8 * var(--u));
+  height: calc(8 * var(--u));
   border-radius: 50%;
-  background: var(--gray);
-  box-shadow: 0 0 10px rgba(148, 163, 184, 0.5);
+  background: rgba(251, 191, 36, 0.15);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 0.8rem;
+  color: var(--gold);
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
+  box-shadow: 0 0 10px rgba(251, 191, 36, 0.2);
   transition: all 0.3s ease;
 }
 
@@ -172,27 +207,32 @@ button, input {
 }
 
 .region-button.selected::before {
-  background: var(--cyan);
-  box-shadow: 0 0 15px var(--cyan);
+  background: rgba(56, 189, 248, 0.2);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
 }
 
 .region-button strong {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-family: var(--font-title);
   letter-spacing: 1px;
+  display: block;
 }
 
 .region-button span {
   color: var(--cyan);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   opacity: 0.8;
   font-weight: 300;
   display: block;
+  margin-top: 2px;
 }
 
 .map-marker {
   display: none;
 }
+
 
 @keyframes pulse-marker {
   0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 20px var(--cyan), 0 0 0 0 rgba(56, 189, 248, 0.6); }
@@ -211,6 +251,65 @@ button, input {
     linear-gradient(to top, rgba(255, 255, 255, 0.03) 0%, transparent 20%);
 }
 
+/* ── Stage Backdrop Themes ── */
+.battle-view.backdrop-village {
+  background:
+    linear-gradient(to top, #1a3a1a 0%, #1a3a1a 18%, transparent 18%),
+    radial-gradient(ellipse at 20% 84%, #2d5a2d 0 8px, transparent 9px),
+    radial-gradient(ellipse at 50% 86%, #2d5a2d 0 6px, transparent 7px),
+    radial-gradient(ellipse at 80% 83%, #2d5a2d 0 10px, transparent 11px),
+    radial-gradient(ellipse at 8% 55%, #1a4a1a 0 15px, transparent 16px),
+    radial-gradient(ellipse at 92% 50%, #1a4a1a 0 12px, transparent 13px),
+    linear-gradient(to bottom, #0c1a2e 0%, #162d50 50%, #1a3530 100%);
+}
+
+.battle-view.backdrop-gates {
+  background:
+    linear-gradient(to top, #2a2520 0%, #2a2520 18%, transparent 18%),
+    radial-gradient(ellipse at 25% 85%, #3a352e 0 6px, transparent 7px),
+    radial-gradient(ellipse at 55% 87%, #3a352e 0 5px, transparent 6px),
+    radial-gradient(ellipse at 75% 84%, #3a352e 0 7px, transparent 8px),
+    linear-gradient(to right, transparent 5%, #4a4040 5% 8%, transparent 8% 92%, #4a4040 92% 95%, transparent 95%),
+    radial-gradient(circle at 7% 40%, rgba(251, 191, 36, 0.15) 0, transparent 25%),
+    radial-gradient(circle at 93% 40%, rgba(251, 191, 36, 0.15) 0, transparent 25%),
+    linear-gradient(to bottom, #0a0e18 0%, #1a1520 60%, #2a2520 100%);
+}
+
+.battle-view.backdrop-locked-gate {
+  background:
+    linear-gradient(to top, #1a1a2e 0%, #1a1a2e 18%, transparent 18%),
+    linear-gradient(135deg, transparent 42%, rgba(56, 189, 248, 0.1) 42% 44%, transparent 44%),
+    linear-gradient(225deg, transparent 38%, rgba(139, 92, 246, 0.1) 38% 40%, transparent 40%),
+    radial-gradient(circle at 30% 35%, rgba(56, 189, 248, 0.2) 0 3px, transparent 4px),
+    radial-gradient(circle at 70% 25%, rgba(139, 92, 246, 0.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 50% 45%, rgba(251, 191, 36, 0.15) 0 2px, transparent 3px),
+    linear-gradient(to bottom, #0a0a20 0%, #151030 50%, #1a1a2e 100%);
+}
+
+.battle-view.backdrop-boss {
+  background:
+    linear-gradient(to top, #2a0a0a 0%, #2a0a0a 18%, transparent 18%),
+    radial-gradient(circle at 20% 70%, rgba(239, 68, 68, 0.3) 0 2px, transparent 3px),
+    radial-gradient(circle at 60% 65%, rgba(251, 191, 36, 0.25) 0 2px, transparent 3px),
+    radial-gradient(circle at 80% 72%, rgba(239, 68, 68, 0.2) 0 2px, transparent 3px),
+    radial-gradient(circle at 40% 30%, rgba(239, 68, 68, 0.15) 0 2px, transparent 3px),
+    radial-gradient(ellipse at 50% 20%, rgba(239, 68, 68, 0.08) 0, transparent 50%),
+    linear-gradient(to bottom, #0a0505 0%, #1a0a0a 40%, #2a0a0a 100%);
+}
+
+/* ── Ground line for battlefield depth ── */
+.enemy-field::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 18%;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  background: linear-gradient(to top, rgba(0,0,0,0.15), transparent);
+  pointer-events: none;
+}
+
 .enemy-field {
   position: relative;
   display: flex;
@@ -218,6 +317,7 @@ button, input {
   justify-content: center;
   padding: calc(4 * var(--u));
 }
+
 
 .enemy-line {
   display: flex;

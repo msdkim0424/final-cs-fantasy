@@ -14,6 +14,7 @@ const regions = [
       { speaker: "ADA", text: "To project a message to the world, you must use the print() incantation. Wrap your message in quotes!" }
     ],
     art: "linear-gradient(45deg, transparent 0 42%, #38b858 42% 58%, transparent 58%), radial-gradient(circle at 25% 24%, #50d8f8 0 12%, transparent 13%), #184820",
+    backdrop: "backdrop-village",
     enemy: "String Slime",
     questions: [
       { prompt: "WHICH COMMAND OUTPUTS TEXT TO THE SCREEN?", choices: ["print()", "show()", "log()", "display()"], answer: "print()", lesson: "PRINT() IS USED TO OUTPUT TEXT." },
@@ -36,6 +37,7 @@ const regions = [
       { speaker: "IORI", text: "Think of a variable like a labeled box. 'health = 100' puts the number 100 into the box named health!" }
     ],
     art: "repeating-linear-gradient(90deg, #184820 0 16px, #286830 16px 28px), radial-gradient(circle at 72% 30%, #d84040 0 9%, transparent 10%)",
+    backdrop: "backdrop-gates",
     enemy: "Var Bat",
     questions: [
       { prompt: "WHICH SYMBOL IS USED TO ASSIGN A VALUE TO A VARIABLE?", choices: ["==", "-", "+", "="], answer: "=", lesson: "THE EQUALS SIGN = IS FOR ASSIGNMENT." },
@@ -58,6 +60,7 @@ const regions = [
       { speaker: "ADA", text: "And remember, Booleans are just True or False!" }
     ],
     art: "linear-gradient(135deg, #986030 0 28%, #f8d858 28% 36%, #603818 36% 62%, #d89038 62% 72%, #202020 72%)",
+    backdrop: "backdrop-locked-gate",
     enemy: "Float Phantom",
     questions: [
       { prompt: "WHAT DATA TYPE IS 3.14?", choices: ["int", "float", "string", "boolean"], answer: "float", lesson: "FLOATS ARE NUMBERS WITH DECIMALS." },
@@ -79,6 +82,7 @@ const regions = [
       { speaker: "IORI", text: "Rune, you have to write the source code to break its armor!" }
     ],
     art: "linear-gradient(90deg, transparent 0 38%, #9c9c9c 38% 58%, transparent 58%), linear-gradient(0deg, #202020 0 24%, #50d8f8 24% 28%, #202020 28%)",
+    backdrop: "backdrop-boss",
     enemy: "Null Brute",
     isBoss: true,
     questions: [
@@ -417,93 +421,75 @@ const art = {
     "................",
     "................"
   ],
-  "Indent Wraith": [
+  "String Slime": [
     "................",
+    "................",
+    "......LLLL......",
+    ".....LLLLLL.....",
+    "....LLLLLLLL....",
+    "...LLlKLLKlLL...",
+    "...LLLLLLLLLL...",
+    "...LLLLllLLLL...",
+    "....LLLLLLLL....",
+    ".....LLLLLL.....",
+    "......lLLl......",
+    ".....ll..ll.....",
+    "................",
+    "................",
+    "................",
+    "................"
+  ],
+  "Var Bat": [
+    "................",
+    "................",
+    "PP..........PP..",
+    ".PP........PP...",
+    "..PP.PPPP.PP....",
+    "...PPPPPPPP.....",
+    "...PPKppKPP.....",
+    "...PPPPPPPP.....",
+    "....PPYYPP......",
+    "....PPPPPP......",
+    ".....P..P.......",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................"
+  ],
+  "Float Phantom": [
+    "................",
+    ".......CC.......",
+    "......CCCC......",
     ".....CCCCCC.....",
-    "....CCccccCC....",
-    "...CCcCCCCcCC...",
-    "..CCcKCCKCCcCC..",
-    "..CCCccccccCCC..",
-    "...CCCCWWCCCC...",
-    "....CCCccCCC....",
-    "...CCcCccCcCC...",
-    "..CCcc....ccCC..",
-    "...Cc......cC...",
-    "....C......C....",
-    "................",
-    "................",
-    "................",
-    "................"
-  ],
-  "Loop Serpent": [
-    "................",
-    ".........KKK....",
-    "........KLLLK...",
-    ".......KLLKLK...",
-    "......KLLLKK....",
-    "...KKKLLKK......",
-    "..KLLLKLLKKK....",
-    ".KLLK..KLLLK....",
-    ".KLLK...KLLK....",
-    "..KKK..KLLK.....",
-    "......KLLK......",
-    ".....KllK.......",
-    "....KllK........",
+    "....CCcCCcCC....",
+    "...CCCKccKCCC...",
+    "...CCCCCCCCCC...",
+    "....CCCWWCCC....",
+    "...CCCCCCCCCC...",
+    "..CCcCCCCCCcCC..",
+    "..Cc..CCCC..cC..",
+    "......cCCc......",
+    ".......cc.......",
     "................",
     "................",
     "................"
   ],
-  "Syntax Mimic": [
+  "Null Brute": [
     "................",
-    "...KKKKKKKKKK...",
-    "..KOOOOOOOOOOK..",
-    ".KOOYYYYYYYYOOK.",
-    ".KOKOKOKOKOKOOK.",
-    ".KOOOOOOOOOOOOK.",
-    ".KORRRRRRRRROOK.",
-    ".KOOYKYKYKYOOOK.",
-    "..KOOOrrrrOOK...",
-    "...KKOOOOOOK....",
-    "....KoOOOOoK....",
-    "...Koo....ooK...",
-    "................",
-    "................",
-    "................",
-    "................"
-  ],
-  "Boolean Golem": [
-    "................",
-    ".....KKKKKK.....",
-    "....KMMMMMMK....",
-    "...KMMmmmmMMK...",
-    "...KMKCmmCKMK...",
-    "..KMMMMMMMMMMK..",
-    "..KMMMYWYMMMMK..",
-    "...KMMMMMMMMK...",
-    "..KMMKMMMMKMMK..",
-    ".KmmK.MMMM.KmmK.",
-    ".....KmmmmK.....",
-    "....KMM..MMK....",
-    "...KMM....MMK...",
-    "................",
-    "................",
-    "................"
-  ],
-  "Null Imp": [
-    "................",
-    "......PPPP......",
-    ".....PPPPPP.....",
-    "....PPpPPpPP....",
-    "...PPKKPPKKPP...",
-    "...PPPPPPPPPP...",
-    "....PPPYYPPP....",
-    "...PPPPPPPPPP...",
-    "..PPP.PPPP.PPP..",
-    ".ppp..pppp..ppp.",
-    "......PPPP......",
-    ".....pp..pp.....",
-    "....pp....pp....",
-    "................",
+    "....KRKRKRKR....",
+    "...RMMMMMMMMR...",
+    "..RMMMMMMMMMRR..",
+    "..RMKRmmRKMMMR..",
+    "..RMMMMMMMMMR...",
+    "..RMMRYYYYRMR...",
+    "...RMMMMMMMR....",
+    "..RRMRMMMMRMRR..",
+    ".RmmR.RMMR.RmmR.",
+    "......RMMR......",
+    ".....RMM.MR.....",
+    "....RMM...MR....",
+    "...RRR.....RRR..",
     "................",
     "................"
   ]
@@ -1044,6 +1030,7 @@ function drawMap() {
     button.type = "button";
     button.className = "region-button";
     button.dataset.regionIndex = String(idx);
+    button.dataset.stage = String(idx + 1);
     button.style.setProperty("--tile-art", region.art);
     button.innerHTML = `<strong>${region.name}</strong><span>${region.topic}</span>`;
     button.addEventListener("mouseenter", () => {
@@ -1287,6 +1274,8 @@ function enterRegion(region) {
   els.title.textContent = region.name.toUpperCase();
   els.world.classList.add("hidden");
   els.battle.classList.remove("hidden");
+  els.battle.className = els.battle.className.replace(/backdrop-\S+/g, "").trim();
+  if (region.backdrop) els.battle.classList.add(region.backdrop);
   els.enemyLine.innerHTML = "";
   
   if (region.story && !state.playedStory[region.id]) {
