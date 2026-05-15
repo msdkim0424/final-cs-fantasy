@@ -1752,6 +1752,9 @@ function resolvePendingChoice(choice) {
 }
 
 document.addEventListener("keydown", (event) => {
+  // Don't intercept keys when typing in Monaco editor
+  if (monacoEditor && monacoEditor.hasTextFocus()) return;
+
   if (state.animating) {
     event.preventDefault();
     return;
